@@ -14,3 +14,5 @@ unitlist = ([cross(rows, c) for c in cols] +
 units = dict((s, [u for u in unitlist if s in u]) for s in squares)
 peers = dict((s, set(sum(units[s],[]))-set([s]))
              for s in squares)
+
+import ipdb; ipdb.set_trace()
