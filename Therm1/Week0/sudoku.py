@@ -13,6 +13,8 @@ class Sudoku:
             for cs in ('123', '456', '789')
         ]
         self.unitlist = self.row_units + self.column_units + self.square_units
+        self.units = dict((s, [u for u in self.unitlist if s in u]) for s in self.boxes)
+        self.peers = dict((s, set(sum(self.units[s],[]))-set([s])) for s in self.boxes)
 
     def cross(self, a, b):
         return [s + t for s in a for t in b]
@@ -22,6 +24,14 @@ class Sudoku:
         unsolved = {k: self.cols if v == '.' else v for (k, v) in unsolved.items()}
         return unsolved
 
+    def eliminate(self, unsolved):
+        solved_boxes = [box for box in unsolved.keys() if len(unsolved[box]) == 1]
+        for box in solved_boxes:
+            n = unsolved[box]
+            for peer in self.peers[box]:
+                unsolved[peer] = unsolved[peer].replace(n, '')
+        return unsolved
+
     def display(self, unsolved):
         """
         Display the values as a 2-D grid.
@@ -29,6 +39,9 @@ class Sudoku:
         Output: None
         """
         values = self.grid_values(unsolved)
+        values = self.eliminate(values)
+        # print(values)
+        # return False
         width = 1 + max(len(values[s]) for s in self.boxes)
         line = '+'.join(['-' * (width * 3)] * 3)
         for r in self.rows:
