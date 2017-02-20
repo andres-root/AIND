@@ -42,7 +42,7 @@ class Sudoku:
                     values[boxes[0]] = n
         return values
 
-    def reduce_puzzle(self, values):
+    def reduce_puzzle(self, values=None):
         if not values:
             values = self.values
 
@@ -56,16 +56,16 @@ class Sudoku:
             # One choice strategy
             self.one_choice(values)
 
-        # Check how many boxes have a determined value, to compare
-        solved_values_after = len([box for box in values.keys() if len(values[box]) == 1])
-        # If no new values were added, stop the loop.
-        self.stalled = solved_values_before == solved_values_after
-        # Sanity check, return False if there is a box with zero available values:
-        if len([box for box in values.keys() if len(values[box]) == 0]):
-            return False
+            # Check how many boxes have a determined value, to compare
+            solved_values_after = len([box for box in values.keys() if len(values[box]) == 1])
+            # If no new values were added, stop the loop.
+            self.stalled = solved_values_before == solved_values_after
+            # Sanity check, return False if there is a box with zero available values:
+            if len([box for box in values.keys() if len(values[box]) == 0]):
+                return False
         return values
 
-    def display(self, values):
+    def display(self, values=None):
         """
         Display the values as a 2-D grid.
         Input: The sudoku in dictionary form
@@ -84,8 +84,8 @@ class Sudoku:
         return
 
     def solve(self, values, display=False):
-        self.values = values
-        self.reduce_puzzle(values)
+        self.values = self.grid_values(values)
+        self.reduce_puzzle()
         if display is True:
             self.display()
         return self.values
