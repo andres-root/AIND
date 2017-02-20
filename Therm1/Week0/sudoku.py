@@ -27,9 +27,6 @@ class Sudoku:
         return values
 
     def eliminate(self, values):
-        if not values:
-            values = self.values
-
         solved_boxes = [box for box in values.keys() if len(values[box]) == 1]
         for box in solved_boxes:
             n = values[box]
@@ -38,9 +35,6 @@ class Sudoku:
         return values
 
     def one_choice(self, values):
-        if not values:
-            values = self.values
-
         for unit in self.unitlist:
             for n in '123456789':
                 boxes = [box for box in unit if n in values[box]]
@@ -54,15 +48,22 @@ class Sudoku:
 
         while not self.stalled:
             # Check how many boxes have a determined value
-            solved_values_before = len([box for box in values.keys() if len(values[box])])
+            solved_values_before = len([box for box in values.keys() if len(values[box]) == 1])
 
             # Eliminate strategy
-            self.eliminate()
+            self.eliminate(values)
 
             # One choice strategy
-            self.one_choice()
+            self.one_choice(values)
 
-        return
+        # Check how many boxes have a determined value, to compare
+        solved_values_after = len([box for box in values.keys() if len(values[box]) == 1])
+        # If no new values were added, stop the loop.
+        self.stalled = solved_values_before == solved_values_after
+        # Sanity check, return False if there is a box with zero available values:
+        if len([box for box in values.keys() if len(values[box]) == 0]):
+            return False
+        return values
 
     def display(self, values):
         """
@@ -82,13 +83,16 @@ class Sudoku:
                 print(line)
         return
 
-    def solve(self, values):
+    def solve(self, values, display=False):
         self.values = values
-        self.reduce_puzzle()
-        return True
+        self.reduce_puzzle(values)
+        if display is True:
+            self.display()
+        return self.values
 
 
 if __name__ == '__main__':
     sudoku = Sudoku()
-    print(sudoku.display('..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..'))
+    unsolved = '..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..'
+    print(sudoku.solve(unsolved, display=True))
     # import ipdb; ipdb.set_trace()
