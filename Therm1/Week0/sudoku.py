@@ -44,6 +44,7 @@ class Sudoku:
         return values
 
     def reduce_puzzle(self, values):
+        self.stalled = False
         while not self.stalled:
             # Check how many boxes have a determined value
             solved_values_before = len([box for box in values.keys() if len(values[box]) == 1])
@@ -83,9 +84,6 @@ class Sudoku:
         Input: The sudoku in dictionary form
         Output: None
         """
-        if not values:
-            values = self.values
-
         width = 1 + max(len(values[s]) for s in self.boxes)
         line = '+'.join(['-' * (width * 3)] * 3)
         for r in self.rows:
@@ -98,9 +96,10 @@ class Sudoku:
     def solve(self, values, display=False):
         self.values = self.grid_values(values)
         self.values = self.reduce_puzzle(self.values)
+        self.display(self.values)
         self.values = self.search(self.values)
         if display is True:
-            self.display()
+            self.display(self.values)
         else:
             return self.values
 
