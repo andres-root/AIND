@@ -42,6 +42,10 @@ class Sudoku:
                     values[boxes[0]] = n
         return values
 
+    # def naked_twins(self, values):
+        # for unit in self.unitlist:
+
+
     def reduce_puzzle(self, values):
         stalled = False
         while not stalled:
@@ -93,6 +97,7 @@ class Sudoku:
         print('----------------------------------------------------------------')
 
     def solve(self, values, display=False):
+        import ipdb; ipdb.set_trace()
         self.values = self.grid_values(values)
         self.values = self.reduce_puzzle(self.values)
         self.display(self.values)
