@@ -1,3 +1,4 @@
+from collections import OrderedDict
 
 
 class Sudoku:
@@ -26,7 +27,7 @@ class Sudoku:
         values = {k: self.cols if v == '.' else v for (k, v) in values.items()}
         return values
 
-    def eliminate(self, values):
+    def eliminate(self, values, n=None, value=None):
         solved_boxes = [box for box in values.keys() if len(values[box]) == 1]
         for box in solved_boxes:
             n = values[box]
@@ -42,9 +43,25 @@ class Sudoku:
                     values[boxes[0]] = n
         return values
 
-    # def naked_twins(self, values):
-        # for unit in self.unitlist:
-
+    def naked_twins(self, values):
+        # unit_values = [{box: values[box] for box in unit if len(values[box]) == 2} for unit in self.unitlist]
+        unit_values = [{box: values[box] for box in unit} for unit in self.unitlist]
+        # twin_values = [e for e in [
+        #     {k: v for (k, v) in unit.items() if list(unit.values()).count(v) > 1}
+        #     for unit in unit_values] if len(e) > 1
+        # ]
+        for unit in unit_values:
+            # twins = [e for e in {k: v for (k, v) in unit.items() if list(unit.values()).count(v) > 1} if len(e) > 0]
+            twins = {k: v for (k, v) in unit.items() if len(v) == 2 if list(unit.values()).count(v) > 1}
+            if len(twins) > 0:
+                # twin_boxes = [b for u in twins for b in list(u.keys())]
+                twin_boxes = list(twins.keys())
+                for k, v in twins.items():
+                    for box in unit.keys():
+                        if box not in twin_boxes:
+                            values[box] = values[box].replace(v[0], '')
+                            values[box] = values[box].replace(v[1], '')
+        return values
 
     def reduce_puzzle(self, values):
         stalled = False
@@ -53,10 +70,13 @@ class Sudoku:
             solved_values_before = len([box for box in values.keys() if len(values[box]) == 1])
 
             # Eliminate strategy
-            self.eliminate(values)
+            values = self.eliminate(values)
+
+            # Naked twins strategy
+            values = self.naked_twins(values)
 
             # One choice strategy
-            self.one_choice(values)
+            values = self.one_choice(values)
 
             # Check how many boxes have a determined value, to compare
             solved_values_after = len([box for box in values.keys() if len(values[box]) == 1])
@@ -94,16 +114,17 @@ class Sudoku:
             print(g)
             if r in 'CF':
                 print(line)
-        print('----------------------------------------------------------------')
+        print('***************************************************************************')
+        print('***************************************************************************')
 
     def solve(self, values, display=False):
-        import ipdb; ipdb.set_trace()
         self.values = self.grid_values(values)
         self.values = self.reduce_puzzle(self.values)
         self.display(self.values)
         self.values = self.search(self.values)
         if display is True:
             self.display(self.values)
+            pass
         else:
             return self.values
 
