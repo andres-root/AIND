@@ -16,7 +16,6 @@ class Sudoku:
         self.units = dict((s, [u for u in self.unitlist if s in u]) for s in self.boxes)
         self.peers = dict((s, set(sum(self.units[s], [])) - set([s])) for s in self.boxes)
         self.values = None
-        self.stalled = False
 
     def cross(self, a, b):
         return [s + t for s in a for t in b]
@@ -44,8 +43,8 @@ class Sudoku:
         return values
 
     def reduce_puzzle(self, values):
-        self.stalled = False
-        while not self.stalled:
+        stalled = False
+        while not stalled:
             # Check how many boxes have a determined value
             solved_values_before = len([box for box in values.keys() if len(values[box]) == 1])
 
@@ -58,7 +57,7 @@ class Sudoku:
             # Check how many boxes have a determined value, to compare
             solved_values_after = len([box for box in values.keys() if len(values[box]) == 1])
             # If no new values were added, stop the loop.
-            self.stalled = solved_values_before == solved_values_after
+            stalled = solved_values_before == solved_values_after
             # Sanity check, return False if there is a box with zero available values:
             if len([box for box in values.keys() if len(values[box]) == 0]):
                 return False
