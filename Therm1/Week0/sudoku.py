@@ -44,17 +44,10 @@ class Sudoku:
         return values
 
     def naked_twins(self, values):
-        # unit_values = [{box: values[box] for box in unit if len(values[box]) == 2} for unit in self.unitlist]
         unit_values = [{box: values[box] for box in unit} for unit in self.unitlist]
-        # twin_values = [e for e in [
-        #     {k: v for (k, v) in unit.items() if list(unit.values()).count(v) > 1}
-        #     for unit in unit_values] if len(e) > 1
-        # ]
         for unit in unit_values:
-            # twins = [e for e in {k: v for (k, v) in unit.items() if list(unit.values()).count(v) > 1} if len(e) > 0]
             twins = {k: v for (k, v) in unit.items() if len(v) == 2 if list(unit.values()).count(v) > 1}
             if len(twins) > 0:
-                # twin_boxes = [b for u in twins for b in list(u.keys())]
                 twin_boxes = list(twins.keys())
                 for k, v in twins.items():
                     for box in unit.keys():
@@ -131,7 +124,6 @@ class Sudoku:
 
 if __name__ == '__main__':
     sudoku = Sudoku()
-    # unsolved = '..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..'
-    unsolved = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
-    print(sudoku.solve(unsolved, display=True))
-    # import ipdb; ipdb.set_trace()
+    easy_unsolved = '..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..'
+    hard_unsolved = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
+    print(sudoku.solve(hard_unsolved, display=True))
