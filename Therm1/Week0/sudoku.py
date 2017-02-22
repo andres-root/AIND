@@ -41,7 +41,7 @@ class Sudoku:
 
     def grid_values(self, values):
         values = dict(zip(self.boxes, values))
-        self.display(values)
+        # self.display(values)
         values = {k: self.cols if v == '.' else v for (k, v) in values.items()}
         return values
 
@@ -125,6 +125,7 @@ class Sudoku:
             print(g)
             if r in 'CF':
                 print(line)
+        print('*****************************************************************************************')
         return
 
     def solve(self, values, display=False):
@@ -142,17 +143,19 @@ class Sudoku:
                               'D1': '5'}
         self.values = self.grid_values(values)
         self.values = self.reduce_puzzle(self.values)
-        self.display(self.values)
+        # self.display(self.values)
         self.values = self.search(self.values)
         if display is True:
+            print('MY DIAGONAL: ')
             self.display(self.values)
+            print('SOLVED DIAGONAL: ')
             self.display(solved_diag_sudoku)
         else:
             return self.values
 
 
 if __name__ == '__main__':
-    sudoku = Sudoku(diagonal=False)
+    sudoku = Sudoku(diagonal=True)
     easy_unsolved = '..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..'
     hard_unsolved = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
     diagonal_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
