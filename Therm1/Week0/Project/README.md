@@ -18,7 +18,7 @@ Q: How do we use constraint propagation to solve the diagonal sudoku problem?
 A: Constraint Propagation reduces the number of possibilitites by combining the strategies.
 
 We just need the necessary information to solve the  diagonals.
-By addig the diagonal units and peers we can now use constraint propagation
+By adding the diagonal units and peers we can now use constraint propagation
 to solve the sudoku with this new restriction. But, how?
 
 In order to solve a normal sudoku we need to create a good representation of the information needed to solve the puzzle. 
