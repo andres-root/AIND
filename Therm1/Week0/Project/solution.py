@@ -52,7 +52,6 @@ class Sudoku:
 
     def grid_values(self, values):
         values = dict(zip(self.boxes, values))
-        # self.display(values)
         values = {k: self.cols if v == '.' else v for (k, v) in values.items()}
         return values
 
