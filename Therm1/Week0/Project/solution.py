@@ -205,6 +205,8 @@ class Sudoku:
         Args:
             grid(string): a string representing a sudoku grid.
                 Example: '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
+            display(bool): Flag that indicates we should display grid in console
+            display(bool): Flag that indicates we should display grid in GUI
         Returns:
             The dictionary representation of the final sudoku grid. False if no solution exists.
         """
