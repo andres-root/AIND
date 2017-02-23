@@ -20,6 +20,17 @@ class Sudoku:
         self.units = dict((s, [u for u in self.unitlist if s in u]) for s in self.boxes)
         self.peers = dict((s, set(sum(self.units[s], [])) - set([s])) for s in self.boxes)
         self.values = None
+        self.assignments = []
+
+    def assign_value(self, values, box, value):
+        """
+        Please use this function to update your values dictionary!
+        Assigns a value to a given box. If it updates the board record it.
+        """
+        values[box] = value
+        if len(value) == 1:
+            self.assignments.append(values.copy())
+        return values
 
     def cross(self, a, b):
         return [s + t for s in a for t in b]
