@@ -25,7 +25,6 @@ class Sudoku:
 
     def assign_value(self, values, box, value):
         """
-        Please use this function to update your values dictionary!
         Assigns a value to a given box. If it updates the board record it.
         """
         values[box] = value
@@ -62,7 +61,7 @@ class Sudoku:
         for box in solved_boxes:
             n = values[box]
             for peer in self.peers[box]:
-                values[peer] = values[peer].replace(n, '')
+                values = self.assign_value(values, peer, values[peer].replace(n, ''))
         return values
 
     def one_choice(self, values):
@@ -82,8 +81,9 @@ class Sudoku:
                 for k, v in twins.items():
                     for box in unit.keys():
                         if box not in twin_boxes:
-                            values[box] = values[box].replace(v[0], '')
-                            values[box] = values[box].replace(v[1], '')
+                            values = self.assign_value(values, box, values[box].replace(v[0], ''))
+                            values = self.assign_value(values, box, values[box].replace(v[1], ''))
+
         return values
 
     def reduce_puzzle(self, values):
@@ -119,39 +119,39 @@ class Sudoku:
         n, s = min((len(values[s]), s) for s in self.boxes if len(values[s]) > 1)
         for value in values[s]:
             new_sudoku = values.copy()
-            new_sudoku[s] = value
+            new_sudoku = self.assign_value(new_sudoku, s, value)
             attempt = self.search(new_sudoku)
             if attempt:
                 return attempt
 
-    def display(self, values=None):
+    def display(self, values, gui=False):
         """
         Display the values as a 2-D grid.
         Input: The sudoku in dictionary form
         Output: None
         """
-        width = 1 + max(len(values[s]) for s in self.boxes)
-        line = '+'.join(['-' * (width * 3)] * 3)
-        for r in self.rows:
-            g = ''.join(values[r + c].center(width) + ('|' if c in '36' else '') for c in self.cols)
-            print(g)
-            if r in 'CF':
-                print(line)
         try:
-            visualize_assignments(self.assignments)
+            width = 1 + max(len(values[s]) for s in self.boxes)
+            line = '+'.join(['-' * (width * 3)] * 3)
+            for r in self.rows:
+                g = ''.join(values[r + c].center(width) + ('|' if c in '36' else '') for c in self.cols)
+                print(g)
+                if r in 'CF':
+                    print(line)
+            if gui is True:
+                visualize_assignments(self.assignments)
         except SystemExit:
             pass
         except:
             print('We could not visualize your board due to a pygame issue. Not a problem! It is not a requirement.')
         return
 
-    def solve(self, values, display=False):
+    def solve(self, values, display=False, gui=False):
         self.values = self.grid_values(values)
-        self.display(self.values)
         self.values = self.reduce_puzzle(self.values)
         self.values = self.search(self.values)
         if display is True:
-            self.display(self.values)
+            self.display(self.values, gui)
         else:
             return self.values
 
@@ -161,4 +161,4 @@ if __name__ == '__main__':
     hard_unsolved = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
     diagonal_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
     sudoku = Sudoku(diagonal=True)
-    sudoku.solve(diagonal_grid, display=True)
+    sudoku.solve(diagonal_grid, display=True, gui=True)
