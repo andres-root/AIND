@@ -215,8 +215,7 @@ class Sudoku:
         self.values = self.search(self.values)
         if display is True:
             self.display(self.values, gui)
-        else:
-            return self.values
+        return self.values
 
 
 if __name__ == '__main__':
