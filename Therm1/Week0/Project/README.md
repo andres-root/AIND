@@ -25,7 +25,7 @@ In order to solve a normal sudoku we need to create a good representation of the
 A sudoku consists of a 9x9 grid, and the objective is to fill the grid with digits in such a way that each unit, that is to say, each row, each column, and each of the 9 principal 3x3 subsquares contains all of the digits from 1 to 9.
 
 So, we need a list of all possible units in the board. Then we apply our reduce function to every peer in them.
-Now, a diagonal sudoku adds two extra diagonal units to the puzzle, so now we have to accounf also for the main diagonals.
+Now, a diagonal sudoku adds two extra diagonal units to the puzzle, so now we have to account also for the main diagonals.
 However if we look closely we discover that there's not really a need to apply an extra function to solve the diagonals.
 If we just add the peers and diagonals to our unitlist we can then apply the same constraints using our reduce funciont for those units, solving the diagonal sudoku.
 
