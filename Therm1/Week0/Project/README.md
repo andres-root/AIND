@@ -6,7 +6,7 @@ Q: How do we use constraint propagation to solve the naked twins problem?
 A: Adding the Naked Twins Strategy adds more constraints to apply in our sudoku board.
 
 The Naked Twins Strategy looks for two squares in a unit that share only two possible values.
-That's why it's called "Twin". After finding those two squares we proceedremoving the two values
+That's why they are called "Twins". After finding those two squares we proceedremoving the two values
 in the rest of the peers in that same unit.
 
 Constraint Propagation reduces the number of possibilitites. So by applying this new constraint
