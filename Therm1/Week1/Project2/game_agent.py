@@ -203,16 +203,38 @@ class CustomPlayer:
 
         # TODO: finish this function!
         if len(game.get_legal_moves()) == 0:
-            return self.score(game, self), (-1, -1)
+            return (self.score(game, self), (-1, -1))
 
-        if maximizing_player:
-            return max([
-                self.minimax(game.forecast_move(move), depth-1, not maximizing_player) for move in game.get_legal_moves
-            ])
-        else:
-            return min([
-                self.minimax(game.forecast_move(move), depth-1, not maximizing_player) for move in game.get_legal_moves
-            ])
+        if depth == 1:
+            if maximizing_player:
+                return max([(self.score(game.forecast_move(m), self), m) for m in game.get_legal_moves()])
+            else:
+                return min([(self.score(game.forecast_move(m), self), m) for m in game.get_legal_moves()])
+
+        # if maximizing_player:
+        #     results = max([
+        #         self.minimax(game.forecast_move(m), depth - 1, not maximizing_player) for m in game.get_legal_moves()
+        #     ])
+        #     return results
+        # else:
+        #     results = min([
+        #         self.minimax(game.forecast_move(m), depth - 1, not maximizing_player) for m in game.get_legal_moves()
+        #     ])
+        #     return results
+        # for move in game.get_legal_moves():
+        #     if maximizing_player:
+        #         return self.minimax(game.forecast_move(move), depth - 1, not maximizing_player)
+        #     else:
+        #         return self.minimax(game.forecast_move(move), depth - 1, not maximizing_player)
+
+        next_games = [(game.forecast_move(mv), mv) for mv in game.get_legal_moves()]
+        results = [(self.minimax(ng, depth-1, not(maximizing_player))[0], mv) for (ng, mv) in next_games]
+
+        if maximizing_player:  # current layer is maximizing
+            return max(results)
+        else:  # current layer is minimizing
+            return min(results)
+
 
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True):
         """Implement minimax search with alpha-beta pruning as described in the
