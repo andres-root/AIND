@@ -153,9 +153,12 @@ class CustomPlayer:
 
             elif self.method == 'alphabeta':
                 if self.iterative:
-                    move = self.alphabeta(game, )
+                    depth = 0
+                    while True:
+                        move = self.alphabeta(game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True)
+                        depth += 1
                 else:
-                    pass
+                    move = self.alphabeta(game, self.search_depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True)
             else:
                 raise 'ERROR: Uknown search method: {0}'.format(self.method)
 
