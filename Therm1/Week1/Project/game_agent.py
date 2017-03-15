@@ -144,13 +144,16 @@ class CustomPlayer:
 
             if self.method == 'minimax':
                 if self.iterative:
-                    move = self.minimax(game, self.search_depth, maximizing_player)
+                    depth = 0
+                    while True:
+                        move = self.minimax(game, depth, maximizing_player)
+                        depth += 1
                 else:
-                    pass
+                    move = self.minimax(game, self.search_depth, maximizing_player)
 
             elif self.method == 'alphabeta':
                 if self.iterative:
-                    move = self.alphabeta(game, self.search_depth)
+                    move = self.alphabeta(game, )
                 else:
                     pass
             else:
@@ -159,11 +162,7 @@ class CustomPlayer:
             return move
 
         except Timeout:
-            # Handle any actions required at timeout, if necessary
-            pass
-
-        # Return the best move from the last completed search iteration
-        raise NotImplementedError
+            return move
 
     def minimax(self, game, depth, maximizing_player=True):
         """Implement the minimax search algorithm as described in the lectures.
