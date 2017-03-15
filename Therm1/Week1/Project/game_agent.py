@@ -37,8 +37,6 @@ def custom_score(game, player):
         The heuristic value of the current game state to the specified player.
     """
 
-    # TODO: finish this function!
-    # raise NotImplementedError
     if game.is_loser(player):
         return float("-inf")
 
@@ -46,9 +44,9 @@ def custom_score(game, player):
         return float("inf")
 
     player_moves = float(len(game.get_legal_moves(player)))
-    opp_moves = float(len(game.get_legal_moves(game.get_opponent(player))))
+    opponent_moves = float(len(game.get_legal_moves(game.get_opponent(player))))
 
-    return player_moves - 2 * opp_moves
+    return player_moves / opponent_moves
 
 
 class CustomPlayer:
@@ -201,40 +199,17 @@ class CustomPlayer:
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()
 
-        # TODO: finish this function!
-        if len(game.get_legal_moves()) == 0:
-            return (self.score(game, self), (-1, -1))
+        if len(game.get_legal_moves()) == 0 or depth == 0:
+            return self.score(game, self), (-1.0, -1.0)
 
-        if depth == 1:
-            if maximizing_player:
-                return max([(self.score(game.forecast_move(m), self), m) for m in game.get_legal_moves()])
-            else:
-                return min([(self.score(game.forecast_move(m), self), m) for m in game.get_legal_moves()])
-
-        # if maximizing_player:
-        #     results = max([
-        #         self.minimax(game.forecast_move(m), depth - 1, not maximizing_player) for m in game.get_legal_moves()
-        #     ])
-        #     return results
-        # else:
-        #     results = min([
-        #         self.minimax(game.forecast_move(m), depth - 1, not maximizing_player) for m in game.get_legal_moves()
-        #     ])
-        #     return results
-        # for move in game.get_legal_moves():
-        #     if maximizing_player:
-        #         return self.minimax(game.forecast_move(move), depth - 1, not maximizing_player)
-        #     else:
-        #         return self.minimax(game.forecast_move(move), depth - 1, not maximizing_player)
-
-        next_games = [(game.forecast_move(mv), mv) for mv in game.get_legal_moves()]
-        results = [(self.minimax(ng, depth-1, not(maximizing_player))[0], mv) for (ng, mv) in next_games]
-
-        if maximizing_player:  # current layer is maximizing
-            return max(results)
-        else:  # current layer is minimizing
-            return min(results)
-
+        if maximizing_player:
+            return max([
+                (self.minimax(game.forecast_move(move), depth - 1, not maximizing_player)[0], move) for move in game.get_legal_moves()
+            ])
+        else:
+            return min([
+                (self.minimax(game.forecast_move(move), depth - 1, not maximizing_player)[0], move) for move in game.get_legal_moves()
+            ])
 
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True):
         """Implement minimax search with alpha-beta pruning as described in the
