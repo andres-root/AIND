@@ -146,19 +146,19 @@ class CustomPlayer:
                 if self.iterative:
                     depth = 0
                     while True:
-                        move = self.minimax(game, depth, maximizing_player)
+                        move = self.minimax(game, depth, maximizing_player)[1]
                         depth += 1
                 else:
-                    move = self.minimax(game, self.search_depth, maximizing_player)
+                    move = self.minimax(game, self.search_depth, maximizing_player)[1]
 
             elif self.method == 'alphabeta':
                 if self.iterative:
                     depth = 0
                     while True:
-                        move = self.alphabeta(game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True)
+                        move = self.alphabeta(game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True)[1]
                         depth += 1
                 else:
-                    move = self.alphabeta(game, self.search_depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True)
+                    move = self.alphabeta(game, self.search_depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True)[1]
             else:
                 raise 'ERROR: Uknown search method: {0}'.format(self.method)
 
