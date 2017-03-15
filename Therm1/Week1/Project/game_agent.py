@@ -252,25 +252,34 @@ class CustomPlayer:
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()
 
-        legal_moves = game.get_legal_moves(self)
-        if depth == 0:
-            return self.score(game, self)
-        if not legal_moves:
-            return game.utiliy(self)
+        if len(game.get_legal_moves()) == 0 or depth == 0:
+            return (self.score(game, self), (-1.0, -1.0))
 
         if maximizing_player:
+            v = float('-inf')
+            best_move = (-1.0, -1.0)
             for move in game.get_legal_moves():
+
                 result = self.alphabeta(game.forecast_move(move), depth - 1, alpha, beta, not maximizing_player)
-                alpha = max(alpha, result)
-                best_move = move
-                if alpha >= beta:
-                    break
-            return alpha, best_move
+
+                if result[0] > v:
+                    v = result[0]
+                    best_move = move
+                if result[0] >= beta:
+                    return v, best_move
+                alpha = max(alpha, result[0])
+            return v, best_move
         else:
+            v = float('inf')
+            best_move = (-1.0, -1.0)
             for move in game.get_legal_moves():
                 result = self.alphabeta(game.forecast_move(move), depth - 1, alpha, beta, not maximizing_player)
-                beta = min(beta, result)
-                best_move = move
-                if beta <= alpha:
-                    break
-            return beta, best_move
+
+                if result[0] < v:
+                    v = result[0]
+                    best_move = move
+
+                if result[0] <= alpha:
+                    return v, best_move
+                beta = min(beta, result[0])
+            return v, best_move
