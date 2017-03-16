@@ -134,10 +134,9 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    player_moves = float(len(game.get_legal_moves(player)))
-    opponent_moves = float(len(game.get_legal_moves(game.get_opponent(player))))
+    final_score = open_move_score(game, player) + improved_score(game, player)
 
-    return player_moves / opponent_moves
+    return final_score
 
 
 class CustomPlayer:
