@@ -134,7 +134,7 @@ def weighted_score(game, player):
 
     own_moves = len(game.get_legal_moves(player))
     opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(own_moves - (4 * opp_moves))
+    return float(own_moves - (8 * opp_moves))
 
 
 def custom_score(game, player):
@@ -209,6 +209,7 @@ class CustomPlayer:
         self.method = method
         self.time_left = None
         self.TIMER_THRESHOLD = timeout
+        self.played_games = {}
 
     def get_move(self, game, legal_moves, time_left):
         """Search for the best move from the available legal moves and return a
@@ -248,6 +249,10 @@ class CustomPlayer:
         if not legal_moves:
             return (-1, -1)
 
+        if game in self.played_games:
+            print('Cached move!')
+            return self.played_games[game]
+
         self.time_left = time_left
 
         # Perform any required initializations, including selecting an initial
@@ -267,18 +272,22 @@ class CustomPlayer:
                     depth = 0
                     while True:
                         move = self.minimax(game, depth, maximizing_player)[1]
+                        self.played_games[game] = move
                         depth += 1
                 else:
                     move = self.minimax(game, self.search_depth, maximizing_player)[1]
+                    self.played_games[game] = move
 
             elif self.method == 'alphabeta':
                 if self.iterative:
                     depth = 0
                     while True:
                         move = self.alphabeta(game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True)[1]
+                        self.played_games[game] = move
                         depth += 1
                 else:
                     move = self.alphabeta(game, self.search_depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True)[1]
+                    self.played_games[game] = move
             else:
                 raise 'ERROR: Uknown search method: {0}'.format(self.method)
 
