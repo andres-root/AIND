@@ -132,9 +132,9 @@ def center_score(game, player):
         return float("inf")
 
     x, y = game.get_player_location(player)
-    own_distance = math.sqrt(x**2 + y**2)
+    own_distance = math.sqrt((x-3)**2 + (y-3)**2)
     x, y = game.get_player_location(game.get_opponent(player))
-    opp_distance = math.sqrt(x**2 + y**2)
+    opp_distance = math.sqrt((x-3)**2 + (y-3)**2)
 
     return float(min(own_distance, opp_distance))
 
@@ -168,7 +168,7 @@ def weighted_score(game, player):
 
     own_moves = len(game.get_legal_moves(player))
     opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(own_moves - (2 * opp_moves))
+    return float(own_moves - (4 * opp_moves))
 
 
 def custom_score(game, player):
