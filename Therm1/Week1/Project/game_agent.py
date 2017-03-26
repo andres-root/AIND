@@ -107,6 +107,24 @@ def improved_score(game, player):
 
 
 def center_score(game, player):
+    """The min the distances of the two players
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    player : hashable
+        One of the objects registered by the game object as a valid player.
+        (i.e., `player` should be either game.__player_1__ or
+        game.__player_2__).
+
+    Returns
+    ----------
+    float
+        The heuristic value of the current game state
+    """
     if game.is_loser(player):
         return float("-inf")
 
@@ -150,7 +168,7 @@ def weighted_score(game, player):
 
     own_moves = len(game.get_legal_moves(player))
     opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(own_moves - (4 * opp_moves))
+    return float(own_moves - (2 * opp_moves))
 
 
 def custom_score(game, player):
@@ -182,8 +200,7 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    # final_score = weighted_score(game, player)
-    final_score = center_score(game, player)
+    final_score = weighted_score(game, player)
 
     return final_score
 
