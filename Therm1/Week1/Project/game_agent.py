@@ -136,7 +136,7 @@ def center_score(game, player):
     x, y = game.get_player_location(game.get_opponent(player))
     opp_distance = math.sqrt(x**2 + y**2)
 
-    return float(min(own_distance, opp_distance))
+    return float(opp_distance - own_distance)
 
 
 def weighted_score(game, player):
@@ -200,7 +200,8 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    final_score = weighted_score(game, player)
+    # final_score = weighted_score(game, player)
+    final_score = center_score(game, player)
 
     return final_score
 
