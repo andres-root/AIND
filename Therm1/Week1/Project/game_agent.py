@@ -132,9 +132,9 @@ def center_score(game, player):
         return float("inf")
 
     x, y = game.get_player_location(player)
-    own_distance = math.sqrt((x-3)**2 + (y-3)**2)
+    own_distance = math.sqrt(x**2 + y**2)
     x, y = game.get_player_location(game.get_opponent(player))
-    opp_distance = math.sqrt((x-3)**2 + (y-3)**2)
+    opp_distance = math.sqrt(x**2 + y**2)
 
     return float(min(own_distance, opp_distance))
 
