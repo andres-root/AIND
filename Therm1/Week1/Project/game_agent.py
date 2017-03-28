@@ -133,6 +133,9 @@ def proportion_score(game, player):
         return float("inf")
 
     available_moves = len(game.get_legal_moves(player))
+    if available_moves == 0:
+        return null_score(game, player)
+
     my_moves = len(game.get_legal_moves(player))
     opponent_moves = len(game.get_legal_moves(game.get_opponent(player)))
 
@@ -169,10 +172,10 @@ def center_score(game, player):
 
     width = game.width // 2
 
-    x = game.get_player_location(player)
-    my_distance = math.sqrt((x[0] - width)**2 + (x[0] - width)**2)
-    y = game.get_player_location(game.get_opponent(player))
-    opponent_distance = math.sqrt((y[0] - width)**2 + (y[0] - width)**2)
+    my_location = game.get_player_location(player)
+    my_distance = math.sqrt((my_location[0] - width)**2 + (my_location[1] - width)**2)
+    opponent_location = game.get_player_location(game.get_opponent(player))
+    opponent_distance = math.sqrt((opponent_location[0] - width)**2 + (opponent_location[1] - width)**2)
 
     return float(opponent_distance - my_distance)
 
