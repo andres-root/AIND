@@ -135,6 +135,7 @@ def center_score(game, player):
 
     my_location = game.get_player_location(player)
     my_distance = math.sqrt((my_location[0] - width)**2 + (my_location[1] - width)**2)
+
     opponent_location = game.get_player_location(game.get_opponent(player))
     opponent_distance = math.sqrt((opponent_location[0] - width)**2 + (opponent_location[1] - width)**2)
 
@@ -209,7 +210,7 @@ def proportion_score(game, player):
     my_proportion = my_moves / available_moves
     opponent_proportion = opponent_moves / available_moves
 
-    return float((my_proportion * 10) - ((opponent_proportion * 10) * 2))
+    return float((my_proportion * 10) - (opponent_proportion * 10))
 
 
 def custom_score(game, player):
