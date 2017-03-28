@@ -243,11 +243,10 @@ def custom_score(game, player):
         return float("inf")
 
     if game.move_count > 6:
-        final_score = weighted_score(game, player)
+        # final_score = weighted_score(game, player)
+        final_score = proportion_score(game, player)
     else:
         final_score = center_score(game, player)
-
-    final_score = proportion_score(game, player)
 
     return final_score
 
