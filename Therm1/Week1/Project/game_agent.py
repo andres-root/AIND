@@ -175,7 +175,8 @@ def weighted_score(game, player):
 
 
 def proportion_score(game, player):
-    """The proportion of available moves wrt the total of available moves
+    """The proportion of available moves for each player wrt the total amount of
+       available moves
 
     Parameters
     ----------
@@ -242,11 +243,10 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    if game.move_count > 6:
-        # final_score = weighted_score(game, player)
-        final_score = proportion_score(game, player)
-    else:
+    if game.move_count <= 6:
         final_score = center_score(game, player)
+    else:
+        final_score = weighted_score(game, player)
 
     return final_score
 
