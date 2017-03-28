@@ -346,7 +346,7 @@ class CustomPlayer:
 
             if self.method == 'minimax':
                 if self.iterative:
-                    depth = 1
+                    depth = 0
                     while True:
                         move = self.minimax(game, depth)[1]
                         depth += 1
