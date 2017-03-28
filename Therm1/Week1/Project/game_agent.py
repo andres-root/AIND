@@ -106,45 +106,6 @@ def improved_score(game, player):
     return float(my_moves - opponent_moves)
 
 
-def proportion_score(game, player):
-    """The proportion of available moves wrt the total of available moves
-
-    Parameters
-    ----------
-    game : `isolation.Board`
-        An instance of `isolation.Board` encoding the current state of the
-        game (e.g., player locations and blocked cells).
-
-    player : hashable
-        One of the objects registered by the game object as a valid player.
-        (i.e., `player` should be either game.__player_1__ or
-        game.__player_2__).
-
-    Returns
-    ----------
-    float
-        The heuristic value of the current game state
-    """
-
-    if game.is_loser(player):
-        return float("-inf")
-
-    if game.is_winner(player):
-        return float("inf")
-
-    available_moves = len(game.get_legal_moves(player))
-    if available_moves == 0:
-        return null_score(game, player)
-
-    my_moves = len(game.get_legal_moves(player))
-    opponent_moves = len(game.get_legal_moves(game.get_opponent(player)))
-
-    my_proportion = my_moves / available_moves
-    opponent_proportion = opponent_moves / available_moves
-
-    return float((my_proportion * 10) - (opponent_proportion * 10))
-
-
 def center_score(game, player):
     """The min the distances of the two players
 
@@ -210,6 +171,45 @@ def weighted_score(game, player):
     my_moves = len(game.get_legal_moves(player))
     opponent_moves = len(game.get_legal_moves(game.get_opponent(player)))
     return float(my_moves - (4 * opponent_moves))
+
+
+def proportion_score(game, player):
+    """The proportion of available moves wrt the total of available moves
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    player : hashable
+        One of the objects registered by the game object as a valid player.
+        (i.e., `player` should be either game.__player_1__ or
+        game.__player_2__).
+
+    Returns
+    ----------
+    float
+        The heuristic value of the current game state
+    """
+
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    available_moves = len(game.get_legal_moves(player))
+    if available_moves == 0:
+        return weighted_score(game, player)
+
+    my_moves = len(game.get_legal_moves(player))
+    opponent_moves = len(game.get_legal_moves(game.get_opponent(player)))
+
+    my_proportion = my_moves / available_moves
+    opponent_proportion = opponent_moves / available_moves
+
+    return float((my_proportion * 10) - ((opponent_proportion * 10) * 2))
 
 
 def custom_score(game, player):
