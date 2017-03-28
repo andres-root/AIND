@@ -171,8 +171,8 @@ def weighted_score(game, player):
 
     my_moves = len(game.get_legal_moves(player))
     opponent_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(my_moves - (2 * opponent_moves))
-    # return float(my_moves - (4 * opponent_moves))
+    # return float(my_moves - (2 * opponent_moves))
+    return float(my_moves - (4 * opponent_moves))
 
 
 def proportion_score(game, player):
