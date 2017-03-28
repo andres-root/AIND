@@ -171,7 +171,8 @@ def weighted_score(game, player):
 
     my_moves = len(game.get_legal_moves(player))
     opponent_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(my_moves - (4 * opponent_moves))
+    return float(my_moves - (2 * opponent_moves))
+    # return float(my_moves - (4 * opponent_moves))
 
 
 def proportion_score(game, player):
@@ -243,10 +244,12 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    if game.move_count <= 6:
-        final_score = center_score(game, player)
-    else:
-        final_score = weighted_score(game, player)
+    # if game.move_count <= 6:
+    #     final_score = center_score(game, player)
+    # else:
+    #     final_score = weighted_score(game, player)
+
+    final_score = weighted_score(game, player)
 
     return final_score
 
@@ -340,25 +343,24 @@ class CustomPlayer:
             # automatically catch the exception raised by the search method
             # when the timer gets close to expiring
             move = (-1, -1)
-            maximizing_player = True
 
             if self.method == 'minimax':
                 if self.iterative:
-                    depth = 0
+                    depth = 1
                     while True:
-                        move = self.minimax(game, depth, maximizing_player)[1]
+                        move = self.minimax(game, depth)[1]
                         depth += 1
                 else:
-                    move = self.minimax(game, self.search_depth, maximizing_player)[1]
+                    move = self.minimax(game, self.search_depth)[1]
 
             elif self.method == 'alphabeta':
                 if self.iterative:
-                    depth = 0
+                    depth = 1
                     while True:
-                        move = self.alphabeta(game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True)[1]
+                        move = self.alphabeta(game, depth)[1]
                         depth += 1
                 else:
-                    move = self.alphabeta(game, self.search_depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True)[1]
+                    move = self.alphabeta(game, self.search_depth)[1]
             else:
                 raise 'ERROR: Uknown search method: {0}'.format(self.method)
 
