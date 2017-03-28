@@ -101,9 +101,45 @@ def improved_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    own_moves = len(game.get_legal_moves(player))
-    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(own_moves - opp_moves)
+    my_moves = len(game.get_legal_moves(player))
+    opponent_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    return float(my_moves - opponent_moves)
+
+
+def proportion_score(game, player):
+    """The proportion of available moves wrt the total of available moves
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    player : hashable
+        One of the objects registered by the game object as a valid player.
+        (i.e., `player` should be either game.__player_1__ or
+        game.__player_2__).
+
+    Returns
+    ----------
+    float
+        The heuristic value of the current game state
+    """
+
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    available_moves = len(game.get_legal_moves(player))
+    my_moves = len(game.get_legal_moves(player))
+    opponent_moves = len(game.get_legal_moves(game.get_opponent(player)))
+
+    my_proportion = my_moves / available_moves
+    opponent_proportion = opponent_moves / available_moves
+
+    return float((my_proportion * 10) - (opponent_proportion * 10))
 
 
 def center_score(game, player):
@@ -131,12 +167,14 @@ def center_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    x, y = game.get_player_location(player)
-    own_distance = math.sqrt(x**2 + y**2)
-    x, y = game.get_player_location(game.get_opponent(player))
-    opp_distance = math.sqrt(x**2 + y**2)
+    width = game.width // 2
 
-    return float(opp_distance - own_distance)
+    x = game.get_player_location(player)
+    my_distance = math.sqrt((x[0] - width)**2 + (x[0] - width)**2)
+    y = game.get_player_location(game.get_opponent(player))
+    opponent_distance = math.sqrt((y[0] - width)**2 + (y[0] - width)**2)
+
+    return float(opponent_distance - my_distance)
 
 
 def weighted_score(game, player):
@@ -166,9 +204,9 @@ def weighted_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    own_moves = len(game.get_legal_moves(player))
-    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(own_moves - (4 * opp_moves))
+    my_moves = len(game.get_legal_moves(player))
+    opponent_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    return float(my_moves - (4 * opponent_moves))
 
 
 def custom_score(game, player):
@@ -200,8 +238,12 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    # final_score = weighted_score(game, player)
-    final_score = center_score(game, player)
+    if game.move_count > 6:
+        final_score = weighted_score(game, player)
+    else:
+        final_score = center_score(game, player)
+
+    final_score = proportion_score(game, player)
 
     return final_score
 
