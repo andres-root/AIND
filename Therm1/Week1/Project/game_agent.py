@@ -249,7 +249,7 @@ def custom_score(game, player):
     # else:
     #     final_score = weighted_score(game, player)
 
-    final_score = weighted_score(game, player)
+    final_score = center_score(game, player)
 
     return final_score
 
