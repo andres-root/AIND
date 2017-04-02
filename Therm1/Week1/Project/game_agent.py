@@ -212,7 +212,7 @@ def proportion_score(game, player):
     my_proportion = my_moves / available_moves
     opponent_proportion = opponent_moves / available_moves
 
-    return float((my_proportion * 10) - (opponent_proportion * 10))
+    return float((my_proportion * 10) - ((opponent_proportion * 10) * 2))
 
 
 def custom_score(game, player):
@@ -244,12 +244,12 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    # if game.move_count <= 6:
-    #     final_score = center_score(game, player)
-    # else:
-    #     final_score = weighted_score(game, player)
+    if game.move_count <= 10:
+        final_score = center_score(game, player)
+    else:
+        final_score = weighted_score(game, player)
 
-    final_score = proportion_score(game, player)
+    final_score = proportion_score(game, player) + weighted_score(game, player)
 
     return final_score
 
