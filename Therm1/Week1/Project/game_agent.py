@@ -244,12 +244,12 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    if game.move_count <= 10:
+    if game.move_count <= 8:
         final_score = center_score(game, player)
     else:
         final_score = weighted_score(game, player)
 
-    final_score = proportion_score(game, player) + weighted_score(game, player)
+    # final_score = proportion_score(game, player)
 
     return final_score
 
