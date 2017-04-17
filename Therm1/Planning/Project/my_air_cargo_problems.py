@@ -29,7 +29,7 @@ class AirCargoProblem(Problem):
         self.initial_state_TF = encode_state(initial, self.state_map)
         Problem.__init__(self, self.initial_state_TF, goal=goal)
         self.cargos = cargos
-        self.planes = planes    
+        self.planes = planes
         self.airports = airports
         self.actions_list = self.get_actions()
 
@@ -93,7 +93,7 @@ class AirCargoProblem(Problem):
                         unload = Action(expr("Unload({}, {}, {})".format(c, p, a)),
                                         [precond_pos, precond_neg],
                                         [effect_add, effect_rem])
-                        Unloads.append(unload)
+                        unloads.append(unload)
             return unloads
 
         def fly_actions():
