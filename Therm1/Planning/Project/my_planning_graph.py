@@ -201,7 +201,7 @@ def mutexify(node1: PgNode, node2: PgNode):
 class PlanningGraph():
     '''
     A planning graph as described in chapter 10 of the AIMA text. The planning
-    graph can be used to reason about 
+    graph can be used to reason about
     '''
 
     def __init__(self, problem: Problem, state: str, serial_planning=True):
@@ -391,7 +391,7 @@ class PlanningGraph():
 
     def interference_mutex(self, node_a1: PgNode_a, node_a2: PgNode_a) -> bool:
         '''
-        Test a pair of actions for mutual exclusion, returning True if the 
+        Test a pair of actions for mutual exclusion, returning True if the
         effect of one action is the negation of a precondition of the other.
 
         HINT: The Action instance associated with an action node is accessible
