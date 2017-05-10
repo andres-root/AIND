@@ -523,12 +523,10 @@ class PlanningGraph():
             level = 0
             while True:
                 nodes = self.s_levels[level]
-                literals = []
-                for s_node in nodes:
-                    literals.append(s_node.literal)
+                literals = [s_node.literal for s_node in nodes]
                 if goal in literals:
                     break
                 else:
                     level += 1
-                level_sum = level_sum + level
+                level_sum += level
         return level_sum
