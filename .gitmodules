@@ -1,0 +1,3 @@
+[submodule "Therm1/AIND-Recognizer"]
+	path = Therm1/AIND-Recognizer
+	url = git@github.com:udacity/AIND-Recognizer.git
