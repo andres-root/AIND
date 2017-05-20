@@ -100,7 +100,7 @@ class SelectorCV(ModelSelector):
     ''' select best model based on average log Likelihood of cross-validation folds
 
     '''
-    def score_cv(self, level):
+    def score_cv(self, component):
         '''
         '''
         scores = []
@@ -108,7 +108,8 @@ class SelectorCV(ModelSelector):
         for cv_train_idx, cv_test_idx in split_method.split(self.sequences):
             X_train, lengths = combine_sequences(cv_train_idx, self.sequences)
             X_test, lengths = combine_sequences(cv_test_idx, self.sequences)
-            model = GaussianHMM(n_components=level, n_iter=1000).fit(X_train, lengths)
+            model = GaussianHMM(n_components=component, n_iter=1000).fit(X_train, lengths)
+            # model = self.base_model(component)
             likelihood = model.score(X_test, lengths)
             scores.append(likelihood)
         return (np.mean, model)
