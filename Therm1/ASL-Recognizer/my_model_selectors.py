@@ -118,7 +118,7 @@ class SelectorCV(ModelSelector):
         best_score = float('-inf')
         best_model = None
 
-        for i in range(self.max_n_components, self.min_n_components + 1):
+        for i in range(self.min_n_components, self.max_n_components + 1):
             score, model = self.score_cv(i)
 
             if score > best_score:
