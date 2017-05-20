@@ -116,7 +116,7 @@ class SelectorCV(ModelSelector):
     def select(self):
         warnings.filterwarnings("ignore", category=DeprecationWarning)
         try:
-            best_score = float('Inf')
+            best_score = float('-inf')
             best_model = None
 
             for i in range(self.min_n_components, self.max_n_components + 1):
