@@ -110,8 +110,8 @@ class SelectorCV(ModelSelector):
 
         for cv_train_idx, cv_test_idx in split_method.split(self.sequences):
             X, lengths = combine_sequences(cv_train_idx, self.sequences)
-            # X, lengths = combine_sequences(cv_test_idx, self.sequences)
             model = GaussianHMM(n_components=hidden_states, n_iter=1000).fit(X, lengths)
+            X, lengths = combine_sequences(cv_test_idx, self.sequences)
             likelihood = model.score(X, lengths)
             if likelihood > best_score:
                 best_score = likelihood
