@@ -91,7 +91,7 @@ class SelectorBIC(ModelSelector):
         warnings.filterwarnings("ignore", category=DeprecationWarning)
 
         try:
-            best_score = float('-inf')
+            best_score = float('Inf')
             best_model = None
 
             for n in range(self.min_n_components, self.max_n_components + 1):
