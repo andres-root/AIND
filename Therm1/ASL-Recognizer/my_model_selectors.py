@@ -68,10 +68,19 @@ class SelectorBIC(ModelSelector):
     Bayesian information criteria: BIC = -2 * logL + p * logN
     """
 
-    def score_bic(self, component):
-        model = self.base_model(component)
+    def score_bic(self, n):
+        '''
+        '''
+        model = self.base_model(n)
+        logL = model.score(self.x, self.lengths)
+        logN = np.log(len(self.X))
 
-        return model
+        d = len(self.X[0])
+        p = n**2 + 2 * n * d - 1
+
+        score = -2.0 * logL + p * logN
+
+        return score
 
     def select(self):
         """ select the best model for self.this_word based on
@@ -85,8 +94,8 @@ class SelectorBIC(ModelSelector):
             best_score = float('-inf')
             best_model = None
 
-            for i in range(self.min_n_components, self.max_n_components + 1):
-                score, model = self.score_bic(i)
+            for n in range(self.min_n_components, self.max_n_components + 1):
+                score, model = self.score_bic(n)
 
                 if score > best_score:
                     best_score = score
@@ -116,16 +125,16 @@ class SelectorCV(ModelSelector):
     ''' select best model based on average log Likelihood of cross-validation folds
 
     '''
-    def score_cv(self, component):
+    def score_cv(self, n):
         '''
         '''
         scores = []
         split_method = KFold(n_splits=2)
         for cv_train_idx, cv_test_idx in split_method.split(self.sequences):
-            x_train, l_train = combine_sequences(cv_train_idx, self.sequences)
-            x_test, l_test = combine_sequences(cv_test_idx, self.sequences)
-            model = GaussianHMM(n_components=component, n_iter=1000).fit(x_train, l_train)
-            logL = model.score(x_test, l_test)
+            X_train, l_train = combine_sequences(cv_train_idx, self.sequences)
+            X_test, l_test = combine_sequences(cv_test_idx, self.sequences)
+            model = GaussianHMM(n_components=n, n_iter=1000).fit(X_train, l_train)
+            logL = model.score(X_test, l_test)
             scores.append(logL)
         return (np.mean, model)
 
@@ -135,8 +144,8 @@ class SelectorCV(ModelSelector):
             best_score = float('-inf')
             best_model = None
 
-            for i in range(self.min_n_components, self.max_n_components + 1):
-                score, model = self.score_cv(i)
+            for n in range(self.min_n_components, self.max_n_components + 1):
+                score, model = self.score_cv(n)
 
                 if score > best_score:
                     best_score = score
