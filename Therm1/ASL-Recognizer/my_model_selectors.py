@@ -100,20 +100,28 @@ class SelectorCV(ModelSelector):
     ''' select best model based on average log Likelihood of cross-validation folds
 
     '''
+    def score_cv(self, level):
+        '''
+        '''
+        scores = []
+        split_method = KFold(n_splits=2)
+        for cv_train_idx, cv_test_idx in split_method.split(self.sequences):
+            X_train, lengths = combine_sequences(cv_train_idx, self.sequences)
+            X_test, lengths = combine_sequences(cv_test_idx, self.sequences)
+            model = GaussianHMM(n_components=level, n_iter=1000).fit(X_train, lengths)
+            likelihood = model.score(X_test, lengths)
+            scores.append(likelihood)
+        return (likelihood, model)
 
     def select(self):
         warnings.filterwarnings("ignore", category=DeprecationWarning)
         best_score = float('-inf')
         best_model = None
-        split_method = KFold(n_splits=2)
-        hidden_states = self.max_n_components - self.min_n_components
 
-        for cv_train_idx, cv_test_idx in split_method.split(self.sequences):
-            X, lengths = combine_sequences(cv_train_idx, self.sequences)
-            model = GaussianHMM(n_components=hidden_states, n_iter=1000).fit(X, lengths)
-            X, lengths = combine_sequences(cv_test_idx, self.sequences)
-            likelihood = model.score(X, lengths)
-            if likelihood > best_score:
-                best_score = likelihood
+        for i in range(self.max_n_components, self.min_n_components + 1):
+            score, model = self.score_cv(i)
+
+            if score > best_score:
+                best_score = score
                 best_model = model
         return best_model
