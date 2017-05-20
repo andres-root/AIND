@@ -111,7 +111,7 @@ class SelectorCV(ModelSelector):
             model = GaussianHMM(n_components=level, n_iter=1000).fit(X_train, lengths)
             likelihood = model.score(X_test, lengths)
             scores.append(likelihood)
-        return (likelihood, model)
+        return (np.mean, model)
 
     def select(self):
         warnings.filterwarnings("ignore", category=DeprecationWarning)
