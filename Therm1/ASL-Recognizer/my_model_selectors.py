@@ -103,11 +103,9 @@ class SelectorCV(ModelSelector):
 
     def select(self):
         warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-        # TODO implement model selection using CV
         best_score = float('-inf')
         best_model = GaussianHMM()
-        split_method = KFold()
+        split_method = KFold(n_splits=2)
         hidden_states = self.max_n_components - self.min_n_components
 
         for cv_train_idx, cv_test_idx in split_method.split(self.sequences):
