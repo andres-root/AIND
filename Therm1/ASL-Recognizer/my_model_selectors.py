@@ -106,23 +106,25 @@ class SelectorCV(ModelSelector):
         scores = []
         split_method = KFold(n_splits=2)
         for cv_train_idx, cv_test_idx in split_method.split(self.sequences):
-            X_train, lengths = combine_sequences(cv_train_idx, self.sequences)
-            X_test, lengths = combine_sequences(cv_test_idx, self.sequences)
-            model = GaussianHMM(n_components=component, n_iter=1000).fit(X_train, lengths)
-            # model = self.base_model(component)
-            likelihood = model.score(X_test, lengths)
+            x_train, l_train = combine_sequences(cv_train_idx, self.sequences)
+            x_test, l_test = combine_sequences(cv_test_idx, self.sequences)
+            model = GaussianHMM(n_components=component, n_iter=1000).fit(x_train, l_train)
+            likelihood = model.score(x_test, l_test)
             scores.append(likelihood)
         return (np.mean, model)
 
     def select(self):
         warnings.filterwarnings("ignore", category=DeprecationWarning)
-        best_score = float('-inf')
-        best_model = None
+        try:
+            best_score = float('Inf')
+            best_model = None
 
-        for i in range(self.min_n_components, self.max_n_components + 1):
-            score, model = self.score_cv(i)
+            for i in range(self.min_n_components, self.max_n_components + 1):
+                score, model = self.score_cv(i)
 
-            if score > best_score:
-                best_score = score
-                best_model = model
-        return best_model
+                if score > best_score:
+                    best_score = score
+                    best_model = model
+            return best_model
+        except:
+            return self.base_model(self.n_constant)
