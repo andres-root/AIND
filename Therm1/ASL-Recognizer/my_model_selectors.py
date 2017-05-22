@@ -71,7 +71,8 @@ class SelectorBIC(ModelSelector):
     def score_bic(self, n):
         '''
         '''
-        model = self.base_model(n)
+        # model = self.base_model(n)
+        model = GaussianHMM(n_components=n, n_iter=1000).fit(self.X, self.lengths)
         logL = model.score(self.x, self.lengths)
         logN = np.log(len(self.X))
 
@@ -80,7 +81,7 @@ class SelectorBIC(ModelSelector):
 
         score = -2.0 * logL + p * logN
 
-        return score
+        return (score, model)
 
     def select(self):
         """ select the best model for self.this_word based on
@@ -114,11 +115,33 @@ class SelectorDIC(ModelSelector):
     DIC = log(P(X(i)) - 1/(M-1)SUM(log(P(X(all but i))
     '''
 
+    def score_dic(self, n):
+        '''
+        '''
+        # model = self.base_model(n)
+        model = GaussianHMM(n_components=n, n_iter=1000).fit(self.X, self.lengths)
+        scores = []
+        for w, (X, lenghts) in self.hwords.items():
+            if w != self.this_word:
+                scores.append(model.score(X, lenghts))
+        score = (model.score(self.X, self.lengths) - np.mean(scores), model)
+        return (score, model)
+
     def select(self):
         warnings.filterwarnings("ignore", category=DeprecationWarning)
+        try:
+            best_score = float('-inf')
+            best_model = None
 
-        # TODO implement model selection based on DIC scores
-        raise NotImplementedError
+            for n in range(self.min_n_components, self.max_n_components + 1):
+                score, model = self.score_dic(n)
+
+                if score > best_score:
+                    best_score = score
+                    best_model = model
+            return best_model
+        except:
+            return self.base_model(self.n_constant)
 
 
 class SelectorCV(ModelSelector):
