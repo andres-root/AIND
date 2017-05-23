@@ -21,19 +21,19 @@ def recognize(models: dict, test_set: SinglesData):
     probabilities = []
     guesses = []
     test_sequences = list(test_set.get_all_Xlengths().values())
-    try:
-        for test_X, test_length in test_sequences:
-            best_score = float('-inf')
-            best_word = None
-            logL_dict = {}
-            for word, model in models.items():
+    for test_X, test_length in test_sequences:
+        best_score = float('-inf')
+        best_guess = None
+        logL_dict = {}
+        for word, model in models.items():
+            try:
                 logL = model.score(test_X, test_length)
                 logL_dict[word] = logL
-                if logL > best_score:
-                    best_score = logL
-                    best_word = word
-            probabilities.append(logL_dict)
-            guesses.append(best_word)
-    except:
-        pass
+            except:
+                logL_dict[word] = float('-inf')
+            if logL > best_score:
+                best_score = logL
+                best_guess = word
+        probabilities.append(logL_dict)
+        guesses.append(best_guess)
     return probabilities, guesses
