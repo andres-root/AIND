@@ -1,3 +1,12 @@
+# Dog Project
+Therm2/dog-project/dogImages/
+Therm2/dog-project/lfw/
+Therm2/dog-project/saved_models/weights.best.from_scratch.hdf5
+Therm2/dog-project/saved_models/weights.best.vgg16.hdf5
+Therm2/dog-project/.ipynb_checkpoints/
+Therm2/dog-project/bottleneck_features/DogVGG16Data.npz
+Therm2/dog-project/DogVGG16Data.npz_FILES
+
 # OSX
 .DS_Store
 
