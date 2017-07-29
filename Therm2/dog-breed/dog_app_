@@ -609,7 +609,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 24,
+   "execution_count": 13,
    "metadata": {},
    "outputs": [
     {
@@ -619,30 +619,24 @@
       "_________________________________________________________________\n",
       "Layer (type)                 Output Shape              Param #   \n",
       "=================================================================\n",
-      "conv2d_10 (Conv2D)           (None, 224, 224, 16)      208       \n",
+      "conv2d_1 (Conv2D)            (None, 224, 224, 16)      208       \n",
       "_________________________________________________________________\n",
-      "max_pooling2d_11 (MaxPooling (None, 112, 112, 16)      0         \n",
+      "max_pooling2d_2 (MaxPooling2 (None, 112, 112, 16)      0         \n",
       "_________________________________________________________________\n",
-      "conv2d_11 (Conv2D)           (None, 112, 112, 32)      2080      \n",
+      "conv2d_2 (Conv2D)            (None, 112, 112, 32)      2080      \n",
       "_________________________________________________________________\n",
-      "max_pooling2d_12 (MaxPooling (None, 56, 56, 32)        0         \n",
+      "max_pooling2d_3 (MaxPooling2 (None, 56, 56, 32)        0         \n",
       "_________________________________________________________________\n",
-      "conv2d_12 (Conv2D)           (None, 56, 56, 64)        8256      \n",
+      "conv2d_3 (Conv2D)            (None, 56, 56, 64)        8256      \n",
       "_________________________________________________________________\n",
-      "max_pooling2d_13 (MaxPooling (None, 28, 28, 64)        0         \n",
+      "max_pooling2d_4 (MaxPooling2 (None, 28, 28, 64)        0         \n",
       "_________________________________________________________________\n",
-      "dropout_5 (Dropout)          (None, 28, 28, 64)        0         \n",
+      "global_average_pooling2d_1 ( (None, 64)                0         \n",
       "_________________________________________________________________\n",
-      "flatten_4 (Flatten)          (None, 50176)             0         \n",
-      "_________________________________________________________________\n",
-      "dense_6 (Dense)              (None, 133)               6673541   \n",
-      "_________________________________________________________________\n",
-      "dropout_6 (Dropout)          (None, 133)               0         \n",
-      "_________________________________________________________________\n",
-      "dense_7 (Dense)              (None, 133)               17822     \n",
+      "dense_1 (Dense)              (None, 133)               8645      \n",
       "=================================================================\n",
-      "Total params: 6,701,907.0\n",
-      "Trainable params: 6,701,907.0\n",
+      "Total params: 19,189.0\n",
+      "Trainable params: 19,189.0\n",
       "Non-trainable params: 0.0\n",
       "_________________________________________________________________\n"
      ]
@@ -662,17 +656,8 @@
     "model.add(MaxPooling2D(pool_size=2))\n",
     "model.add(Conv2D(filters=64, kernel_size=2, padding='same', activation='relu'))\n",
     "model.add(MaxPooling2D(pool_size=2))\n",
-    "# model.add(GlobalAveragePooling2D())\n",
-    "\n",
-    "# model.add(Dense(133, activation='relu'))\n",
-    "\n",
-    "model.add(Dropout(0.3))\n",
-    "model.add(Flatten())\n",
+    "model.add(GlobalAveragePooling2D())\n",
     "model.add(Dense(133, activation='relu'))\n",
-    "model.add(Dropout(0.4))\n",
-    "model.add(Dense(133, activation='softmax'))\n",
-    "\n",
-    "\n",
     "\n",
     "model.summary()"
    ]
@@ -686,7 +671,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 25,
+   "execution_count": 14,
    "metadata": {
     "collapsed": true
    },
@@ -708,7 +693,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 26,
+   "execution_count": 15,
    "metadata": {},
    "outputs": [
     {
@@ -717,44 +702,44 @@
      "text": [
       "Train on 6680 samples, validate on 835 samples\n",
       "Epoch 1/10\n",
-      "6660/6680 [============================>.] - ETA: 0s - loss: 4.9077 - acc: 0.0084Epoch 00000: val_loss improved from inf to 4.84010, saving model to saved_models/weights.best.from_scratch.hdf5\n",
-      "6680/6680 [==============================] - 227s - loss: 4.9074 - acc: 0.0085 - val_loss: 4.8401 - val_acc: 0.0204\n",
+      "6660/6680 [============================>.] - ETA: 0s - loss: 11.5977 - acc: 0.0074Epoch 00000: val_loss improved from inf to 11.82061, saving model to saved_models/weights.best.from_scratch.hdf5\n",
+      "6680/6680 [==============================] - 203s - loss: 11.6001 - acc: 0.0073 - val_loss: 11.8206 - val_acc: 0.0108\n",
       "Epoch 2/10\n",
-      "6660/6680 [============================>.] - ETA: 0s - loss: 4.7439 - acc: 0.0231Epoch 00001: val_loss improved from 4.84010 to 4.58002, saving model to saved_models/weights.best.from_scratch.hdf5\n",
-      "6680/6680 [==============================] - 228s - loss: 4.7436 - acc: 0.0232 - val_loss: 4.5800 - val_acc: 0.0491\n",
+      "6660/6680 [============================>.] - ETA: 0s - loss: 11.4234 - acc: 0.0101Epoch 00001: val_loss improved from 11.82061 to 11.57835, saving model to saved_models/weights.best.from_scratch.hdf5\n",
+      "6680/6680 [==============================] - 202s - loss: 11.4227 - acc: 0.0102 - val_loss: 11.5784 - val_acc: 0.0108\n",
       "Epoch 3/10\n",
-      "6660/6680 [============================>.] - ETA: 0s - loss: 4.4173 - acc: 0.0533Epoch 00002: val_loss improved from 4.58002 to 4.32376, saving model to saved_models/weights.best.from_scratch.hdf5\n",
-      "6680/6680 [==============================] - 238s - loss: 4.4166 - acc: 0.0533 - val_loss: 4.3238 - val_acc: 0.0635\n",
+      "6660/6680 [============================>.] - ETA: 0s - loss: 12.1116 - acc: 0.0084Epoch 00002: val_loss did not improve\n",
+      "6680/6680 [==============================] - 202s - loss: 12.1144 - acc: 0.0084 - val_loss: 12.4564 - val_acc: 0.0108\n",
       "Epoch 4/10\n",
-      "6660/6680 [============================>.] - ETA: 0s - loss: 4.0857 - acc: 0.0859Epoch 00003: val_loss improved from 4.32376 to 4.20369, saving model to saved_models/weights.best.from_scratch.hdf5\n",
-      "6680/6680 [==============================] - 243s - loss: 4.0868 - acc: 0.0858 - val_loss: 4.2037 - val_acc: 0.0790\n",
+      "6660/6680 [============================>.] - ETA: 0s - loss: 12.5665 - acc: 0.0087Epoch 00003: val_loss did not improve\n",
+      "6680/6680 [==============================] - 201s - loss: 12.5693 - acc: 0.0087 - val_loss: 14.1106 - val_acc: 0.0084\n",
       "Epoch 5/10\n",
-      "6660/6680 [============================>.] - ETA: 0s - loss: 3.7355 - acc: 0.1428Epoch 00004: val_loss did not improve\n",
-      "6680/6680 [==============================] - 243s - loss: 3.7352 - acc: 0.1428 - val_loss: 4.2547 - val_acc: 0.0874\n",
+      "6660/6680 [============================>.] - ETA: 0s - loss: 15.2535 - acc: 0.0113Epoch 00004: val_loss did not improve\n",
+      "6680/6680 [==============================] - 201s - loss: 15.2561 - acc: 0.0112 - val_loss: 15.8228 - val_acc: 0.0084\n",
       "Epoch 6/10\n",
-      "6660/6680 [============================>.] - ETA: 0s - loss: 3.3518 - acc: 0.1997Epoch 00005: val_loss did not improve\n",
-      "6680/6680 [==============================] - 243s - loss: 3.3505 - acc: 0.2001 - val_loss: 4.3693 - val_acc: 0.0802\n",
+      "6660/6680 [============================>.] - ETA: 0s - loss: 15.6618 - acc: 0.0104Epoch 00005: val_loss did not improve\n",
+      "6680/6680 [==============================] - 200s - loss: 15.6609 - acc: 0.0105 - val_loss: 15.3360 - val_acc: 0.0084\n",
       "Epoch 7/10\n",
-      "6660/6680 [============================>.] - ETA: 0s - loss: 2.9560 - acc: 0.2707Epoch 00006: val_loss did not improve\n",
-      "6680/6680 [==============================] - 243s - loss: 2.9592 - acc: 0.2702 - val_loss: 4.3369 - val_acc: 0.0862\n",
+      "6660/6680 [============================>.] - ETA: 0s - loss: 15.5359 - acc: 0.0099Epoch 00006: val_loss did not improve\n",
+      "6680/6680 [==============================] - 200s - loss: 15.5354 - acc: 0.0099 - val_loss: 15.8595 - val_acc: 0.0096\n",
       "Epoch 8/10\n",
-      "6660/6680 [============================>.] - ETA: 0s - loss: 2.5816 - acc: 0.3407Epoch 00007: val_loss did not improve\n",
-      "6680/6680 [==============================] - 244s - loss: 2.5827 - acc: 0.3403 - val_loss: 4.5426 - val_acc: 0.0874\n",
+      "6660/6680 [============================>.] - ETA: 0s - loss: 15.9432 - acc: 0.0087Epoch 00007: val_loss did not improve\n",
+      "6680/6680 [==============================] - 200s - loss: 15.9414 - acc: 0.0088 - val_loss: 15.9637 - val_acc: 0.0096\n",
       "Epoch 9/10\n",
-      "6660/6680 [============================>.] - ETA: 0s - loss: 2.2695 - acc: 0.4150Epoch 00008: val_loss did not improve\n",
-      "6680/6680 [==============================] - 244s - loss: 2.2696 - acc: 0.4148 - val_loss: 4.7481 - val_acc: 0.0898\n",
+      "6660/6680 [============================>.] - ETA: 0s - loss: 15.9656 - acc: 0.0095Epoch 00008: val_loss did not improve\n",
+      "6680/6680 [==============================] - 200s - loss: 15.9661 - acc: 0.0094 - val_loss: 15.9637 - val_acc: 0.0096\n",
       "Epoch 10/10\n",
-      "6660/6680 [============================>.] - ETA: 0s - loss: 2.0371 - acc: 0.4632Epoch 00009: val_loss did not improve\n",
-      "6680/6680 [==============================] - 244s - loss: 2.0363 - acc: 0.4632 - val_loss: 4.7453 - val_acc: 0.1006\n"
+      "6660/6680 [============================>.] - ETA: 0s - loss: 15.9656 - acc: 0.0095Epoch 00009: val_loss did not improve\n",
+      "6680/6680 [==============================] - 200s - loss: 15.9661 - acc: 0.0094 - val_loss: 15.9637 - val_acc: 0.0096\n"
      ]
     },
     {
      "data": {
       "text/plain": [
-       "<keras.callbacks.History at 0x7f6310335eb8>"
+       "<keras.callbacks.History at 0x7f640c375b38>"
       ]
      },
-     "execution_count": 26,
+     "execution_count": 15,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -785,7 +770,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 27,
+   "execution_count": 16,
    "metadata": {
     "collapsed": true
    },
@@ -805,14 +790,14 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 28,
+   "execution_count": 17,
    "metadata": {},
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "Test accuracy: 6.5789%\n"
+      "Test accuracy: 1.1962%\n"
      ]
     }
    ],
